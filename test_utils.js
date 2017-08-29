@@ -22,6 +22,7 @@ const DEFAULT_GLOBAL_CONFIG: GlobalConfig = {
   coverageThreshold: {global: {}},
   expand: false,
   findRelatedTests: false,
+  followSymlinks: false,
   forceExit: false,
   json: false,
   lastCommit: false,

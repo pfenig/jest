@@ -83,6 +83,7 @@ const getConfigs = (
       coverageThreshold: options.coverageThreshold,
       expand: options.expand,
       findRelatedTests: options.findRelatedTests,
+      followSymlinks: options.followSymlinks,
       forceExit: options.forceExit,
       json: options.json,
       lastCommit: options.lastCommit,

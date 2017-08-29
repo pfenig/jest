@@ -37,6 +37,7 @@ export default ({
   },
   displayName: 'project-name',
   expand: false,
+  followSymlinks: false,
   forceExit: false,
   globals: {},
   haste: {

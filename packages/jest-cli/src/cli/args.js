@@ -208,6 +208,11 @@ export const options = {
       'the minimal amount of tests necessary.',
     type: 'boolean',
   },
+  followSymlinks: {
+    default: undefined,
+    description: 'Whether to include symbolic links in file crawling.',
+    type: 'boolean',
+  },
   forceExit: {
     default: undefined,
     description:

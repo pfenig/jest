@@ -49,6 +49,7 @@ type Options = {
   cacheDirectory?: string,
   console?: Console,
   extensions: Array<string>,
+  followSymlinks?: boolean,
   forceNodeFilesystemAPI?: boolean,
   hasteImplModulePath?: string,
   ignorePattern: HasteRegExp,
@@ -68,6 +69,7 @@ type Options = {
 type InternalOptions = {
   cacheDirectory: string,
   extensions: Array<string>,
+  followSymlinks: boolean,
   forceNodeFilesystemAPI: boolean,
   hasteImplModulePath?: string,
   ignorePattern: HasteRegExp,
@@ -210,6 +212,7 @@ class HasteMap extends EventEmitter {
     this._options = {
       cacheDirectory: options.cacheDirectory || os.tmpdir(),
       extensions: options.extensions,
+      followSymlinks: !!options.followSymlinks,
       forceNodeFilesystemAPI: !!options.forceNodeFilesystemAPI,
       hasteImplModulePath: options.hasteImplModulePath,
       ignorePattern: options.ignorePattern,
@@ -227,6 +230,12 @@ class HasteMap extends EventEmitter {
       watch: !!options.watch,
     };
     this._console = options.console || global.console;
+    if (this._options.followSymlinks && this._options.useWatchman) {
+      this._console.warn(
+        'watchman can not be used with followSymlinks, watchman will be disabled',
+      );
+      this._options.useWatchman = false;
+    }
     if (!(options.ignorePattern instanceof RegExp)) {
       this._console.warn(
         'jest-haste-map: the `ignorePattern` options as a function is being ' +
@@ -540,6 +549,7 @@ class HasteMap extends EventEmitter {
         return nodeCrawl({
           data: hasteMap,
           extensions: options.extensions,
+          followSymlinks: options.followSymlinks,
           forceNodeFilesystemAPI: options.forceNodeFilesystemAPI,
           ignore,
           roots: options.roots,
@@ -559,6 +569,7 @@ class HasteMap extends EventEmitter {
       return crawl({
         data: hasteMap,
         extensions: options.extensions,
+        followSymlinks: options.followSymlinks,
         forceNodeFilesystemAPI: options.forceNodeFilesystemAPI,
         ignore,
         roots: options.roots,

@@ -454,6 +454,7 @@ export default function normalize(options: InitialOptions, argv: Argv) {
       case 'expand':
       case 'globals':
       case 'findRelatedTests':
+      case 'followSymlinks':
       case 'forceExit':
       case 'listTests':
       case 'logHeapUsage':

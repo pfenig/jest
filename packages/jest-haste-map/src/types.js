@@ -29,6 +29,7 @@ export type WorkerCallback = (
 export type CrawlerOptions = {|
   data: InternalHasteMap,
   extensions: Array<string>,
+  followSymlinks: boolean,
   forceNodeFilesystemAPI: boolean,
   ignore: IgnoreMatcher,
   roots: Array<string>,

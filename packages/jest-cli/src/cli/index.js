@@ -268,6 +268,7 @@ const _buildContextsAndHasteMaps = async (
       createDirectory(config.cacheDirectory);
       const hasteMapInstance = Runtime.createHasteMap(config, {
         console: new Console(outputStream, outputStream),
+        followSymlinks: globalConfig.followSymlinks,
         maxWorkers: globalConfig.maxWorkers,
         resetCache: !config.cache,
         watch: globalConfig.watch || globalConfig.watchAll,
