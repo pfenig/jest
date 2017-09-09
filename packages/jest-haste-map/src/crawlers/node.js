@@ -21,10 +21,24 @@ function find(
   roots: Array<string>,
   extensions: Array<string>,
   ignore: IgnoreMatcher,
+  followSymlinks: boolean,
   callback: Callback,
 ): void {
   const result = [];
   let activeCalls = 0;
+
+  let stat = fs.lstat;
+  if (followSymlinks) {
+    stat = (file, cb) => {
+      fs.lstat(file, (err, stat) => {
+        if (stat.isSymbolicLink()) {
+          fs.stat(file, cb);
+        } else {
+          cb(err, stat);
+        }
+      });
+    };
+  }
 
   function search(directory: string): void {
     activeCalls++;
@@ -38,7 +52,7 @@ function find(
         }
         activeCalls++;
 
-        fs.lstat(file, (err, stat) => {
+        stat(file, (err, stat) => {
           activeCalls--;
 
           if (!err && stat && !stat.isSymbolicLink()) {
@@ -160,7 +174,7 @@ module.exports = function nodeCrawl(
     };
 
     if (forceNodeFilesystemAPI || process.platform === 'win32') {
-      find(roots, extensions, ignore, callback);
+      find(roots, extensions, ignore, followSymlinks, callback);
     } else {
       findNative(roots, extensions, ignore, followSymlinks, callback);
     }
